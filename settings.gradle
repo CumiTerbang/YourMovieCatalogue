@@ -1,0 +1,2 @@
+rootProject.name = "YourMovieCatalogue"
+include ':app'
