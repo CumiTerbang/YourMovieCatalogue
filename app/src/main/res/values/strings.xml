@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Your Movie Catalogue</string>
+
+    <string name="lipsum">Lorem Ipsum</string>
+    <string name="lipsum_longer">Lorem Ipsum</string>
+    <string name="lipsum_longer_more">Lorem Ipsum</string>
+
+    <string name="more">More</string>
+    <string name="about">About</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search...</string>
 </resources>
