@@ -1,12 +1,12 @@
 package com.haryop.yourmoviecatalogue.data.local
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import com.haryop.yourmoviecatalogue.data.model.DetailDataModel
+import com.haryop.yourmoviecatalogue.data.model.RatingsConverters
 
-@Database(entities = [DetailDataModel::class], version = 1, exportSchema = false)
+@Database(entities = [DetailDataModel::class], version = 3, exportSchema = false)
+@TypeConverters(RatingsConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao

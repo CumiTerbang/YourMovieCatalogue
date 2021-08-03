@@ -87,11 +87,20 @@ class DetailPageFragment : BaseFragmentBinding<FragmentDetailPageBinding>() {
         titleTextView.text = "${data.title} (${data.year})"
         subtitleTextView.text = data.type
 
+        detailContentLinearLayout.addView(getDetailTextView("<b>Ratings (${data.ratings.size}):</b>"))
+        var ratings_content = "<ul>"
+        data.ratings.forEach {
+           ratings_content = ratings_content + "<li>source: ${it.source}<br>value: ${it.value}</li>"
+        }
+        ratings_content = ratings_content + "</ul>"
+        detailContentLinearLayout.addView(getDetailTextView(ratings_content))
+
         for (_data in DetailDataModel::class.memberProperties) {
             if (_data.name.equals("poster") ||
                 _data.name.equals("title") ||
                 _data.name.equals("year") ||
-                _data.name.equals("type")
+                _data.name.equals("type") ||
+                _data.name.equals("ratings")
             ) {
                 return
             }
@@ -105,15 +114,6 @@ class DetailPageFragment : BaseFragmentBinding<FragmentDetailPageBinding>() {
             }
         }
 
-        detailContentLinearLayout.addView(getDetailTextView("<b>Ratings:</b>"))
-        for (_data in data.ratings) {
-            detailContentLinearLayout.addView(
-                getDetailTextView(
-                    "source: ${_data.source}" +
-                            "<br>>value: ${_data.value}"
-                )
-            )
-        }
 
     }
 

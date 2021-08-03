@@ -6,7 +6,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.haryop.yourmoviecatalogue.data.model.DetailDataModel
-import com.haryop.yourmoviecatalogue.data.model.SearchDataModel_Item
 import com.haryop.yourmoviecatalogue.databinding.ItemBottomSpaceBinding
 import com.haryop.yourmoviecatalogue.databinding.MovieItemLayoutBinding
 import com.haryop.yourmoviecatalogue.ui.BottomspaceViewHolder

@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.haryop.yourmoviecatalogue.data.model.DetailDataModel
-import com.haryop.yourmoviecatalogue.data.model.SearchDataModel_Item
 import com.haryop.yourmoviecatalogue.utils.ConstantsObj
 import retrofit2.HttpException
 import java.io.IOException

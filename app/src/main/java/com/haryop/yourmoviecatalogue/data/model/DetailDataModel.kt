@@ -1,8 +1,9 @@
 package com.haryop.yourmoviecatalogue.data.model
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 
@@ -22,10 +23,7 @@ data class DetailDataModel(
     @SerializedName("Country") var country: String="",
     @SerializedName("Awards") var awards: String="",
     @SerializedName("Poster") var poster: String="",
-
-    @Ignore
-    @SerializedName("Ratings") var ratings: List<DetailDataModel_Rating> = emptyList(),
-
+    @SerializedName("Ratings") var ratings: List<DetailDataModel_Rating> = ArrayList(),
     @SerializedName("Metascore") var metascore: String="",
     @SerializedName("imdbRating") var imdbRating: String="",
     @SerializedName("imdbVotes") var imdbVotes: String="",
@@ -44,5 +42,14 @@ data class DetailDataModel(
 
 data class DetailDataModel_Rating(
     @SerializedName("Source") var source: String="",
-    @SerializedName("value") var value: String=""
+    @SerializedName("Value") var value: String=""
 )
+
+var gson = Gson()
+class RatingsConverters {
+    @TypeConverter
+    fun listToJson(value: List<DetailDataModel_Rating>?) = gson.toJson(value)
+
+    @TypeConverter
+    fun jsonToList(value: String) = gson.fromJson(value, Array<DetailDataModel_Rating>::class.java).toList()
+}

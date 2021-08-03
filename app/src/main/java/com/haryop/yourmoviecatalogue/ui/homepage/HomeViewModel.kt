@@ -5,7 +5,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.haryop.yourmoviecatalogue.data.model.DetailDataModel
-import com.haryop.yourmoviecatalogue.data.model.SearchDataModel_Item
 import com.haryop.yourmoviecatalogue.data.repository.OMDbRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

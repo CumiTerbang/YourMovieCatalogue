@@ -10,7 +10,6 @@ import androidx.paging.liveData
 import com.haryop.yourmoviecatalogue.data.Resource
 import com.haryop.yourmoviecatalogue.data.local.MovieDao
 import com.haryop.yourmoviecatalogue.data.model.DetailDataModel
-import com.haryop.yourmoviecatalogue.data.model.SearchDataModel_Item
 import com.haryop.yourmoviecatalogue.data.remote.ApiServices
 import com.haryop.yourmoviecatalogue.data.remote.RemoteDataSource
 import com.haryop.yourmoviecatalogue.data.remote.SearchPagingDataSource
