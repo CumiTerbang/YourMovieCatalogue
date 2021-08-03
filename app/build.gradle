@@ -56,6 +56,9 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.21"
 
+    //shining shimmering splendid
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
     //Carousel View
     implementation 'com.synnapps:carouselview:0.1.5'
 

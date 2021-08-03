@@ -5,9 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movie_recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="@dimen/padding_32"
+            android:text="@string/welcome"
+            android:textSize="@dimen/textsize_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movie_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <include
+            android:id="@+id/loading_layout"
+            layout="@layout/shimering_home_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

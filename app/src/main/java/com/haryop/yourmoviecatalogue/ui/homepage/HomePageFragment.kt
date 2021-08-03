@@ -1,6 +1,7 @@
 package com.haryop.yourmoviecatalogue.ui.homepage
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -37,7 +38,15 @@ class HomePageFragment : BaseFragmentBinding<FragmentHomePageBinding>(),
     fun setUpRecyclerView() = with(viewBinding) {
         adapter = MovieListAdapter(this@HomePageFragment)
         adapter.addLoadStateListener {
-            swipeContainer.isRefreshing = it.source.refresh is LoadState.Loading
+            if(it.source.refresh is LoadState.Loading){
+                loadingLayout.shimmerView.startShimmer()
+                loadingLayout.loadingContainer.visibility = View.VISIBLE
+                movieRecyclerView.visibility = View.GONE
+            }else{
+                loadingLayout.shimmerView.stopShimmer()
+                loadingLayout.loadingContainer.visibility = View.GONE
+                movieRecyclerView.visibility = View.VISIBLE
+            }
         }
 
         val layManager = LinearLayoutManager(requireContext())
@@ -57,8 +66,9 @@ class HomePageFragment : BaseFragmentBinding<FragmentHomePageBinding>(),
     }
 
     fun onSearchMovie(_query: String) = with(viewBinding) {
-        query = _query
+        welcome.visibility = View.GONE
 
+        query = _query
         requireActivity().viewModelStore.clear()
         onGetSourcesObserver(_query)
     }
@@ -66,6 +76,7 @@ class HomePageFragment : BaseFragmentBinding<FragmentHomePageBinding>(),
     override fun onResume() {
         (activity as ToolbarListener).onUpdateToolbar(ConstantsObj.HOME_PAGE, "")
         if (!query.equals("")) {
+            viewBinding.welcome.visibility = View.GONE
             onGetSourcesObserver(query)
         }
 

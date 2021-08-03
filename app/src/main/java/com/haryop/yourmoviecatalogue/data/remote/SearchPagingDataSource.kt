@@ -7,6 +7,7 @@ import com.haryop.yourmoviecatalogue.data.model.SearchDataModel_Item
 import com.haryop.yourmoviecatalogue.utils.ConstantsObj
 import retrofit2.HttpException
 import java.io.IOException
+import java.lang.Exception
 import javax.inject.Inject
 
 class SearchPagingDataSource @Inject constructor(
@@ -18,6 +19,10 @@ class SearchPagingDataSource @Inject constructor(
         val page = params.key ?: ConstantsObj.SEARCH_PAGE_DEFAULT_INDEX
         return try {
             val response = apiServices.getPagingSearch(search_query, page.toString())
+            if(response.Response.equals("False")){
+                var e = Exception()
+                return LoadResult.Error(e)
+            }
             LoadResult.Page(
                 response.Search,
                 prevKey = if (page == ConstantsObj.SEARCH_PAGE_DEFAULT_INDEX) null else page - 1,

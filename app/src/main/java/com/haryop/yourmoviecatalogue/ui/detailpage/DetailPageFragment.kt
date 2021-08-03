@@ -3,6 +3,7 @@ package com.haryop.yourmoviecatalogue.ui.detailpage
 import android.content.Intent
 import android.text.Html
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -42,6 +43,10 @@ class DetailPageFragment : BaseFragmentBinding<FragmentDetailPageBinding>() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     //shimmering stop here
+                    loadingLayout.shimmerView.stopShimmer()
+                    loadingLayout.loadingContainer.visibility = View.GONE
+                    contentLayout.visibility = View.VISIBLE
+
                     if (it.data != null) {
                         setUpContent(it.data)
                     } else {
@@ -51,10 +56,18 @@ class DetailPageFragment : BaseFragmentBinding<FragmentDetailPageBinding>() {
                 }
                 Resource.Status.ERROR -> {
                     //shimmering stop here
+                    loadingLayout.shimmerView.stopShimmer()
+                    loadingLayout.loadingContainer.visibility = View.GONE
+                    contentLayout.visibility = View.GONE
+
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
                 Resource.Status.LOADING -> {
                     //shimmering start here
+                    loadingLayout.shimmerView.startShimmer()
+                    loadingLayout.loadingContainer.visibility = View.VISIBLE
+                    contentLayout.visibility = View.GONE
+
                 }
             }
 
