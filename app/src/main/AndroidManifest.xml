@@ -3,6 +3,7 @@
     package="com.haryop.yourmoviecatalogue">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".MainApplication"
@@ -28,6 +29,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".ui.AboutActivity" />
+
+        <activity
+            android:name=".ui.detailpage.DetailPosterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

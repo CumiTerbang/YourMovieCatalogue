@@ -68,10 +68,18 @@ fun Context.setDate(publishedAt: String): String {
     return date
 }
 
-fun Context.setImageGlide(imgUrl:String?, view:View, imageViewTarget:ImageView){
+fun Context.setImageGlide(imgUrl: String?, view: View, imageViewTarget: ImageView) {
     com.bumptech.glide.Glide.with(view)
-        .load(imgUrl?:"")
+        .load(imgUrl ?: "")
         .placeholder(com.haryop.yourmoviecatalogue.R.mipmap.ic_launcher_round)
+        .error(com.haryop.yourmoviecatalogue.R.mipmap.ic_launcher_round)
         .into(imageViewTarget)
+}
 
+fun Context.setImageGlideDummy(imgUrl: String?, view: View, imageViewTarget: ImageView) {
+    com.bumptech.glide.Glide.with(view)
+        .load(com.haryop.yourmoviecatalogue.R.mipmap.ic_launcher_round)
+        .placeholder(com.haryop.yourmoviecatalogue.R.mipmap.ic_launcher_round)
+        .error(com.haryop.yourmoviecatalogue.R.mipmap.ic_launcher_round)
+        .into(imageViewTarget)
 }

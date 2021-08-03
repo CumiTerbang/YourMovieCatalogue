@@ -17,15 +17,17 @@ import com.haryop.yourmoviecatalogue.databinding.ActivityMainBinding
 import com.haryop.yourmoviecatalogue.ui.homepage.HomePageFragment
 import com.haryop.yourmoviecatalogue.utils.BaseActivityBinding
 import com.haryop.yourmoviecatalogue.utils.ConstantsObj
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 interface ToolbarListener {
-    fun onUpdateToolbar(currentPage:Int)
+    fun onUpdateToolbar(currentPage:Int, title:String)
 }
 
+@AndroidEntryPoint
 class MainActivity : BaseActivityBinding<ActivityMainBinding>(), Toolbar.OnMenuItemClickListener, ToolbarListener {
     override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
         get() = ActivityMainBinding::inflate
@@ -92,7 +94,7 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>(), Toolbar.OnMenuI
                 searchView.setOnQueryTextListener(object :
                     SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        query?.let { reSearchPage(it) }
+                        query?.let { onSearchSubmit(it) }
 
                         if (!searchView.isIconified()) {
                             searchView.setIconified(true)
@@ -116,9 +118,9 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>(), Toolbar.OnMenuI
         startActivity(intent)
     }
 
-    fun reSearchPage(_query: String) = with(binding) {
+    fun onSearchSubmit(_query: String) = with(binding) {
         var mainFragment: HomePageFragment = getForegroundFragment() as HomePageFragment
-        mainFragment.onReSearch(_query)
+        mainFragment.onSearchMovie(_query)
     }
 
     fun getForegroundFragment(): Fragment? {
@@ -153,7 +155,7 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>(), Toolbar.OnMenuI
         }
     }
 
-    override fun onUpdateToolbar(currentPage:Int) {
+    override fun onUpdateToolbar(currentPage:Int, title:String) {
         when(currentPage){
             ConstantsObj.HOME_PAGE->{
                 binding.mainToolbar.menu.findItem(R.id.action_search).setVisible(true)
@@ -162,6 +164,7 @@ class MainActivity : BaseActivityBinding<ActivityMainBinding>(), Toolbar.OnMenuI
             ConstantsObj.DETAIL_PAGE->{
                 binding.mainToolbar.menu.findItem(R.id.action_search).setVisible(false)
                 binding.mainToolbar.menu.findItem(R.id.action_about).setVisible(false)
+                binding.mainToolbar.title = title
             }
         }
     }

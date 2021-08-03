@@ -18,7 +18,6 @@ class SearchPagingDataSource @Inject constructor(
         val page = params.key ?: ConstantsObj.SEARCH_PAGE_DEFAULT_INDEX
         return try {
             val response = apiServices.getPagingSearch(search_query, page.toString())
-            Log.e("NewsListPagingSource", "${response.totalResults}")
             LoadResult.Page(
                 response.Search,
                 prevKey = if (page == ConstantsObj.SEARCH_PAGE_DEFAULT_INDEX) null else page - 1,
@@ -34,6 +33,9 @@ class SearchPagingDataSource @Inject constructor(
     }
 
     override fun getRefreshKey(state: PagingState<Int, SearchDataModel_Item>): Int? {
-        TODO("Not yet implemented")
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }
     }
 }

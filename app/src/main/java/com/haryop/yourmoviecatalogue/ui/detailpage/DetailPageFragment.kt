@@ -1,23 +1,116 @@
 package com.haryop.yourmoviecatalogue.ui.detailpage
 
+import android.content.Intent
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.setPadding
+import androidx.fragment.app.viewModels
+import com.haryop.yourmoviecatalogue.R
+import com.haryop.yourmoviecatalogue.data.Resource
+import com.haryop.yourmoviecatalogue.data.model.DetailDataModel
 import com.haryop.yourmoviecatalogue.databinding.FragmentDetailPageBinding
-import com.haryop.yourmoviecatalogue.ui.ToolbarListener
 import com.haryop.yourmoviecatalogue.utils.BaseFragmentBinding
-import com.haryop.yourmoviecatalogue.utils.ConstantsObj
+import com.haryop.yourmoviecatalogue.utils.setImageGlide
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.reflect.full.memberProperties
 
+@AndroidEntryPoint
 class DetailPageFragment : BaseFragmentBinding<FragmentDetailPageBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailPageBinding
         get() = FragmentDetailPageBinding::inflate
 
+    private val viewModel: DetailViewModel by viewModels()
+    var imdb_id: String = ""
     lateinit var viewBinding: FragmentDetailPageBinding
+
     override fun setupView(binding: FragmentDetailPageBinding) {
         viewBinding = binding
-        setUpToolbar()
+
+        arguments?.getString("imdb_id")?.let {
+            imdb_id = it
+            viewModel.start(imdb_id)
+            onGetDetailObserver()
+        }
+
     }
 
-    fun setUpToolbar(){
+    private fun onGetDetailObserver() = with(viewBinding) {
+        viewModel.getDetailData.observe(viewLifecycleOwner, {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    //shimmering stop here
+                    if (it.data != null) {
+                        setUpContent(it.data)
+                    } else {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                Resource.Status.ERROR -> {
+                    //shimmering stop here
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                }
+                Resource.Status.LOADING -> {
+                    //shimmering start here
+                }
+            }
+
+        })
+    }
+
+    fun setUpContent(data: DetailDataModel) = with(viewBinding) {
+        context?.setImageGlide(data.poster, viewBinding.root, posterImageView)
+        imageContainer.setOnClickListener {openDetailPoster(data.poster)}
+
+        titleTextView.text = "${data.title} (${data.year})"
+        subtitleTextView.text = data.type
+
+        for (_data in DetailDataModel::class.memberProperties) {
+            if (_data.name.equals("poster") ||
+                _data.name.equals("title") ||
+                _data.name.equals("year") ||
+                _data.name.equals("type")
+            ) {
+                return
+            }
+
+            if (_data.get(data) is String) {
+                val data_name: String =
+                    _data.name.substring(0, 1).toUpperCase() + _data.name.substring(1)
+                detailContentLinearLayout.addView(
+                    getDetailTextView("<b>${data_name}:</b> ${_data.get(data)}")
+                )
+            }
+        }
+
+        detailContentLinearLayout.addView(getDetailTextView("<b>Ratings:</b>"))
+        for (_data in data.ratings) {
+            detailContentLinearLayout.addView(
+                getDetailTextView(
+                    "source: ${_data.source}" +
+                            "<br>>value: ${_data.value}"
+                )
+            )
+        }
 
     }
+
+    fun getDetailTextView(detail_data: String): TextView {
+        val tv_dynamic = TextView(requireContext())
+        tv_dynamic.textSize = 20f
+        tv_dynamic.text = Html.fromHtml(detail_data)
+        tv_dynamic.setPadding((resources.getDimension(R.dimen.padding_8).toInt()))
+
+        return tv_dynamic
+    }
+
+    fun openDetailPoster(poster_url: String) {
+        var intent = Intent(requireContext(), DetailPosterActivity::class.java)
+        intent.putExtra("poster_url", poster_url)
+        startActivity(intent)
+    }
+
 }
