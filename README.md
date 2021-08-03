@@ -7,7 +7,7 @@ Welcome to my simple android kotlin project
 
 in this project I try to make a movie cataloge app using [OMDb API](http://www.omdbapi.com/) 
 
-Click [here](https://drive.google.com/file/d/1hfTtxqt7IB4BPQDB1EKHBLWP8oVY6gad/view?usp=sharing) to download the app
+Click [here](https://drive.google.com/file/d/1awVFs96UavMpUGZpoTd62KPbgXHxzQMn/view?usp=sharing) to download the app
 
 
 ## Features
