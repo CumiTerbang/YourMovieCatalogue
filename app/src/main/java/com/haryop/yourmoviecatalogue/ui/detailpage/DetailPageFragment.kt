@@ -38,20 +38,19 @@ class DetailPageFragment : BaseFragmentBinding<FragmentDetailPageBinding>() {
 
     }
 
+    var isSetUpContent = false
     private fun onGetDetailObserver() = with(viewBinding) {
         viewModel.getDetailData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    //shimmering stop here
-                    loadingLayout.shimmerView.stopShimmer()
-                    loadingLayout.loadingContainer.visibility = View.GONE
-                    contentLayout.visibility = View.VISIBLE
 
-                    if (it.data != null) {
+                    if (it.data != null && !isSetUpContent) {
                         setUpContent(it.data)
-                    } else {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
+
+//                  }else {
+//                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+//                    }
 
                 }
                 Resource.Status.ERROR -> {
@@ -75,8 +74,15 @@ class DetailPageFragment : BaseFragmentBinding<FragmentDetailPageBinding>() {
     }
 
     fun setUpContent(data: DetailDataModel) = with(viewBinding) {
+        //shimmering stop here
+        loadingLayout.shimmerView.stopShimmer()
+        loadingLayout.loadingContainer.visibility = View.GONE
+        contentLayout.visibility = View.VISIBLE
+
+        isSetUpContent = true
+
         context?.setImageGlide(data.poster, viewBinding.root, posterImageView)
-        imageContainer.setOnClickListener {openDetailPoster(data.poster)}
+        imageContainer.setOnClickListener { openDetailPoster(data.poster) }
 
         titleTextView.text = "${data.title} (${data.year})"
         subtitleTextView.text = data.type

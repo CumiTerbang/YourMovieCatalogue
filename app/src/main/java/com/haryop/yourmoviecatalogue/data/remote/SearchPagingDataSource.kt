@@ -3,6 +3,7 @@ package com.haryop.yourmoviecatalogue.data.remote
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.haryop.yourmoviecatalogue.data.model.DetailDataModel
 import com.haryop.yourmoviecatalogue.data.model.SearchDataModel_Item
 import com.haryop.yourmoviecatalogue.utils.ConstantsObj
 import retrofit2.HttpException
@@ -13,9 +14,9 @@ import javax.inject.Inject
 class SearchPagingDataSource @Inject constructor(
     private val apiServices: ApiServices,
     private val search_query: String
-) : PagingSource<Int, SearchDataModel_Item>() {
+) : PagingSource<Int, DetailDataModel>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SearchDataModel_Item> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DetailDataModel> {
         val page = params.key ?: ConstantsObj.SEARCH_PAGE_DEFAULT_INDEX
         return try {
             val response = apiServices.getPagingSearch(search_query, page.toString())
@@ -37,7 +38,7 @@ class SearchPagingDataSource @Inject constructor(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, SearchDataModel_Item>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, DetailDataModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

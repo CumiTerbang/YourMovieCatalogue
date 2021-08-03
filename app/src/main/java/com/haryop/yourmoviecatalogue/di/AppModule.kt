@@ -1,7 +1,10 @@
 package com.haryop.yourmoviecatalogue.di
 
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.haryop.yourmoviecatalogue.data.local.AppDatabase
+import com.haryop.yourmoviecatalogue.data.local.MovieDao
 import com.haryop.yourmoviecatalogue.data.remote.ApiServices
 import com.haryop.yourmoviecatalogue.data.remote.RemoteDataSource
 import com.haryop.yourmoviecatalogue.data.repository.OMDbRepository
@@ -9,6 +12,7 @@ import com.haryop.yourmoviecatalogue.utils.ConstantsObj
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -51,10 +55,21 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideDatabase(@ApplicationContext appContext: Context) =
+        AppDatabase.getDatabase(appContext)
+
+    @Singleton
+    @Provides
+    fun provideMovieDao(db: AppDatabase) = db.movieDao()
+
+
+    @Singleton
+    @Provides
     fun provideRepository(
+        localDataSource: MovieDao,
         remoteDataSource: RemoteDataSource,
         apiServices: ApiServices
     ) =
-        OMDbRepository(remoteDataSource, apiServices)
+        OMDbRepository(localDataSource, remoteDataSource, apiServices)
 
 }
