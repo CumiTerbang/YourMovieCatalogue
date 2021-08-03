@@ -1,5 +1,6 @@
 package com.haryop.yourmoviecatalogue.ui.homepage
 
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,12 @@ class HomePageFragment : BaseFragmentBinding<FragmentHomePageBinding>(),
                 loadingLayout.loadingContainer.visibility = View.GONE
                 movieRecyclerView.visibility = View.VISIBLE
             }
+
+            if(it.source.refresh is LoadState.Error){
+                welcome.visibility = View.VISIBLE
+                welcome.text = "Movie not found"
+                movieRecyclerView.visibility = View.GONE
+            }
         }
 
         val layManager = LinearLayoutManager(requireContext())
@@ -67,7 +74,6 @@ class HomePageFragment : BaseFragmentBinding<FragmentHomePageBinding>(),
 
     fun onSearchMovie(_query: String) = with(viewBinding) {
         welcome.visibility = View.GONE
-
         query = _query
         requireActivity().viewModelStore.clear()
         onGetSourcesObserver(_query)
